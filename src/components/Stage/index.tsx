@@ -17,10 +17,13 @@ const generateWord = (size: number) => {
 const Stage = () => {
   const [words, setWords] = useState<string[]>([generateWord(6) || '', generateWord(6) || '', generateWord(6) || '']);
   const handleFinish = () => {
-    const newWord = generateWord(6);
-    if (newWord) {
-      setWords([newWord]);
-    }
+    setWords((prevWords) => {
+      const newWord = generateWord(6);
+      if (newWord) {
+        return [...prevWords.slice(1), newWord];
+      }
+      return prevWords.slice(1);
+    });
   };
   return (
     <div className="stage">
