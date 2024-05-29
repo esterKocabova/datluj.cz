@@ -38,8 +38,8 @@ node_modules/
 .env
 .env.test
 
-# Generated output
-dist
+# # Generated output
+# dist
 
 # VS Code settings
 .vscode
