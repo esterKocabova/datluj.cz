@@ -1,27 +1,32 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 interface IWordboxProp {
   word: string;
+  onFinish: () => void;
 }
-const Wordbox: React.FC<IWordboxProp> = ({ word }) => {
-  const [lettersLeft, setLettersLeft] = useState<string>(word);
-  const handleKeyUp = useCallback((event: KeyboardEvent) => {
-    setLettersLeft((prevLettersLeft) => {
-      if (prevLettersLeft.length === 0) {
-        return prevLettersLeft;
-      }
-      if (event.key === prevLettersLeft[0]) {
-        return prevLettersLeft.slice(1);
-      }
-      return prevLettersLeft;
-    });
-  }, []);
+const Wordbox : React.FC<IWordboxProp> = ({ word, onFinish }) => {
+  const [lettersLeft, setLettersLeft] = useState<string>(word);  
   useEffect(() => {
+    const handleKeyUp = (event: KeyboardEvent) => {
+      setLettersLeft((prevLettersLeft) => {
+        if (prevLettersLeft.length === 0) {
+          return prevLettersLeft;
+        }
+        if (event.key === prevLettersLeft[0]) {
+          const newLettersLeft = prevLettersLeft.slice(1);
+          if (newLettersLeft.length === 0) {
+            onFinish();
+          }
+          return newLettersLeft;
+        }
+        return prevLettersLeft;
+      });
+    };
     document.addEventListener('keyup', handleKeyUp);
     return () => {
       document.removeEventListener('keyup', handleKeyUp);
     };
-  }, [handleKeyUp]);
+  }, [onFinish]);
   return (
     <div className="wordbox">{lettersLeft}</div>
   );
