@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 interface IWordboxProp {
   word: string;
+  active: boolean;
   onFinish: () => void;
 }
-const Wordbox : React.FC<IWordboxProp> = ({ word, onFinish }) => {
+const Wordbox : React.FC<IWordboxProp> = ({ word, onFinish, active }) => {
   const [lettersLeft, setLettersLeft] = useState<string>(word);  
   const [mistake, setMistake] = useState<boolean>(false);
   useEffect(() => {
+    if (!active) return;
     const handleKeyUp = (event: KeyboardEvent) => {
       setLettersLeft((prevLettersLeft) => {
         if (prevLettersLeft.length === 0) {
@@ -30,7 +32,7 @@ const Wordbox : React.FC<IWordboxProp> = ({ word, onFinish }) => {
     return () => {
       document.removeEventListener('keyup', handleKeyUp);
     };
-  }, [onFinish]);
+  }, [active, onFinish]);
   return (
     <div className={`wordbox ${mistake ? 'wordbox--mistake' : ''}`}>{lettersLeft}</div>
   );

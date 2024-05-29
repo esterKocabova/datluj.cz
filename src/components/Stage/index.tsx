@@ -6,8 +6,7 @@ import './style.css';
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const generateWord = (size: number) => {
   const sizeIndex = size === undefined
-    ? Math.floor(Math.random() * wordList.length)
-    : size - 3;
+    ? Math.floor(Math.random() * wordList.length) : size - 3;
   if (sizeIndex < 0 || sizeIndex >= wordList.length) {
     return null;
   }
@@ -16,7 +15,7 @@ const generateWord = (size: number) => {
   return words[wordIndex];
 };
 const Stage = () => {
-  const [words, setWords] = useState<string[]>(['jahoda']);
+  const [words, setWords] = useState<string[]>([generateWord(6) || '', generateWord(6) || '', generateWord(6) || '']);
   const handleFinish = () => {
     const newWord = generateWord(6);
     if (newWord) {
@@ -27,8 +26,8 @@ const Stage = () => {
     <div className="stage">
       <div className="stage__mistakes">Chyb: 0</div>
       <div className="stage__words">
-        {words.map((word) => (
-          <Wordbox word={word} key={word} onFinish={handleFinish} />
+        {words.map((word, index) => (
+          <Wordbox word={word} key={word} onFinish={handleFinish} active={index === 0} />
         ))}
       </div>
     </div>
